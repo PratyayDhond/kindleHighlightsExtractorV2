@@ -1,0 +1,11 @@
+.header-title-br {
+    display: block;
+  }
+  
+  .header-title {
+    display: inline-block;
+  }
+  
+  .header-title-br ~ * {
+    display: inline;
+  }
