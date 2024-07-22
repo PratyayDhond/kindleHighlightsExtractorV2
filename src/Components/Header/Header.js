@@ -1,7 +1,7 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { useEffect, useState } from 'react';
-import { darkTheme, lightTheme, HeadingStyle, DescriptionStyle } from "../themeConstants";
+import { darkTheme, lightTheme, HeadingStyle, DescriptionStyle } from "../Constants/themeConstants";
 import './Header.css'
 function Header({theme, setTheme}){
   const [darkMode, setDarkMode] = useState(false);

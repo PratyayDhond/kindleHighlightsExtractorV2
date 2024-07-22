@@ -3,7 +3,7 @@ import { Box, Typography, Link, collapseClasses } from '@mui/material';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import CopyrightIcon from '@mui/icons-material/Copyright';
-import { darkTheme } from '../themeConstants';
+import { darkTheme } from '../Constants/themeConstants';
 import { BorderTopRounded } from '@mui/icons-material';
 
 function Footer({theme}) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { darkTheme } from '../themeConstants';
+import { darkTheme } from '../Constants/themeConstants';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -16,7 +16,7 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export default function InputFileUpload({theme, setDisabled, setFileData}) {
+export default function InputFileUpload({theme, setDisabled, setFileType, setFileData}) {
     const [fileName, setFileName] = useState('Upload file')
     const [selectedFile, setSelectedFile] = useState(null);
     
@@ -28,6 +28,8 @@ export default function InputFileUpload({theme, setDisabled, setFileData}) {
         if(selectedFile !== null){
             setFileName(selectedFile.name)
             setDisabled(false);
+            setFileType(selectedFile.type)
+            console.log(selectedFile)
             const reader = new FileReader();
             reader.onload = () => {
               setFileData(reader.result);    

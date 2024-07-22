@@ -1,9 +1,11 @@
 import { Button, CircularProgress } from '@material-ui/core';
-import { useEffect, useState } from 'react';
-import { darkTheme } from '../themeConstants';
+import { useEffect } from 'react';
+import { darkTheme } from '../Constants/themeConstants';
+import getHighlightFilesZip from '../getHighlightFilesZip';
+import { INCORRECT_FILE_TYPE } from '../Constants/errorConstants';
+function SubmitButton({theme, loading, setLoading, setDisabled, disabled, fileType, uploadedFile, setErrorMessage}) {
 
-function SubmitButton({theme, loading, setLoading, disabled, uploadedFile}) {
-
+  var submitButtonTheme = theme === darkTheme ? SubmitButtonDark : SubmitButtonLight
   useEffect(() => {
     if(uploadedFile !== null){
       // console.log(uploadedFile)
@@ -13,13 +15,13 @@ function SubmitButton({theme, loading, setLoading, disabled, uploadedFile}) {
   return (
     <Button
       variant="contained"
-      style={theme === darkTheme ? SubmitButtonDark : SubmitButtonLight}
+      style={submitButtonTheme}
       disabled={disabled} // disable the button as long as no file is uploaded
-      onClick={()=>{submitDataForParsing(setLoading,uploadedFile)}}
+      onClick={()=>{submitDataForParsing(setLoading,setDisabled,uploadedFile, fileType, setErrorMessage)}}
     >
      {
         loading 
-        ? <CircularProgress size={24} color="primary" />
+        ? <CircularProgress size={24} style={submitButtonTheme} />
         : "Submit" // todo replace this with parsing and processing method
      }
     </Button>
@@ -41,10 +43,15 @@ const SubmitButtonLight = {
 }
 
 
-function submitDataForParsing(setLoading, file){
+function submitDataForParsing(setLoading, setDisabled, file, fileType, setErrorMessage){
   setLoading(true);
-  console.log(file)
-  setLoading(false)
+  setDisabled(true);
+  if(fileType !== "text/plain")
+    setErrorMessage(INCORRECT_FILE_TYPE)
+  else
+    getHighlightFilesZip(file, setErrorMessage)
+  setLoading(false);
+  setDisabled(false);
 }
 
 export default SubmitButton
