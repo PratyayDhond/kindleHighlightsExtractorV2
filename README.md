@@ -77,3 +77,16 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
     - If you want to check which version of nvm are available use - `nvm list`
     - To install a specific `nvm` version use `nvm install 22`
     - `nvm` - Node Version Manager
+
+- ERROR
+``` 
+    markdown-pdf
+    npm error code ERESOLVE
+    npm error ERESOLVE could not resolve
+    npm error
+    npm error While resolving: @material-ui/core@4.12.4
+    npm error Found: react@18.3.1
+    npm error node_modules/react
+    npm error   peer react@">=16.8.0" from @emotion/react@11.13.
+```
+- Solution -> use `--legacy-peer-deps` after the npm command

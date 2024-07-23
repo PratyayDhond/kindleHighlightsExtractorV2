@@ -21,7 +21,8 @@ export default function InputFileUpload({theme, setDisabled, setFileType, setFil
     const [selectedFile, setSelectedFile] = useState(null);
     
     const handleFileChange = (event) => {
-      setSelectedFile(event.target.files[0]);
+        if(event !== null)
+            setSelectedFile(event.target.files[0]);
     };
 
     useEffect(()=>{

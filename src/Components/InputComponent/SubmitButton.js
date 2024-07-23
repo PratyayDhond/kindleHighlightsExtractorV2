@@ -52,6 +52,7 @@ function submitDataForParsing(setLoading, setDisabled, file, fileType, setErrorM
     getHighlightFilesZip(file, setErrorMessage)
   setLoading(false);
   setDisabled(false);
+  setErrorMessage(""); // since it reached here there was no error so safe to reset previous error message
 }
 
 export default SubmitButton

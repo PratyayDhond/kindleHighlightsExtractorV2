@@ -38,3 +38,5 @@ function getTimeStamp(str){
 }
 
 export default processMetaData
+
+// ToDo make this more modular by importing REGEX strings from constants and calling 1 method with different params for all these cases
