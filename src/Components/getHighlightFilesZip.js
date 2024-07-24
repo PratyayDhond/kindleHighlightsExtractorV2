@@ -1,5 +1,8 @@
 import validateClippings from "./ValidateClippings";
 import getBooks from "./getBooks";
+import { ENDL, H5, QUOTE } from "./Constants/markdownConstants";
+import jsPDF from 'jspdf';
+import {marked} from 'marked';
 
 function getHighlightFilesZip(clippingsTxtFile, setErrorMessage){
 
@@ -23,26 +26,31 @@ async function getPdfs(books,setErrorMessage){
         date: true,
     }
     try {
+        var count = 0;
         for(const book in books){
             var pdf = await bookToPdf(book, books[book], flags)
-            pdfs.push([book,pdf])
+            pdfs.push([book, pdf])
+            count++;
             // temporary
-            break;
+            if(count > 5)
+                break;
         }
     }catch(e){
         setErrorMessage(e.toString())
     }
-    console.log(pdfs)
-    sendToUser(pdfs[0][0], pdfs[0][1]) // todo use obj notation here
+    // console.log(pdfs)
+    sendToUser(pdfs[3][0], pdfs[3][1]) // todo use obj notation here
     return pdfs
 }
 
 function sendToUser(title, data){
-    var dataUrl = window.URL.createObjectURL(data);
-    var tempLink = document.createElement('a');
-    tempLink.href = dataUrl;
-    tempLink.setAttribute('download', title.trim() + ".pdf");
-    tempLink.click();
+    if(data !== null){
+        var dataUrl = window.URL.createObjectURL(data);
+        var tempLink = document.createElement('a');
+        tempLink.href = dataUrl;
+        tempLink.setAttribute('download', title.trim() + ".pdf");
+        tempLink.click();    
+    }
 }
 
 function checkNull(value){
@@ -53,12 +61,26 @@ function checkNull(value){
     return false
 }
 
-function getHtml(title, content, flags){
-    const ENDL = "<br/>";
+const generatePdfBlob =  async (markdownString) => {
+    const htmlString = marked(markdownString);
+    const pdf = new jsPDF();  
+    var pdfBlob = null;
+    console.log("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww")
+    await pdf.html(htmlString, {
+        callback: function (doc) {
+          pdfBlob = doc.output('blob');
+        },
+     });
+    return pdfBlob  
+  };
+  
+
+function getMarkdown(title, content, flags){
+
     var md = "";
-    md += "<h4> "+title+"</h4>"
+    md += "### "+title
     md += ENDL
-    md += "<h5> Highlights </h5>"
+    md += H5 + " Highlights"
     md += ENDL
     for(const highlight of content){
         if(flags.noteType)
@@ -70,36 +92,23 @@ function getHtml(title, content, flags){
         if(flags.pageNo && !checkNull(highlight.pageNo))
             md += "Page: " + highlight.pageNo + ENDL
         if(flags.highlight)
-            md += "<q>" + highlight.highlight+ "</q>" + ENDL
+            md += QUOTE + highlight.highlight + ENDL
         if(flags.date && !checkNull(highlight.timestamp))
             md += highlight.timestamp + ENDL
         md += ENDL + ENDL
-        if(md.endsWith("<h6> " + ENDL + ENDL + ENDL)){
+        if(md.endsWith(ENDL + ENDL + ENDL + ENDL)){
             md = "" // no flags enabled
             break
         }
     }   
-    console.log(md)
-    alert(md)
+    // console.log(md)
     return md;
 }
 
 async function bookToPdf(title,content,flags){
     
-    var bookHighlightsInHtml = getHtml(title, content, flags)
-    // const htmlString = marked(bookHighlightsInMarkdown)
-    // console.log(bookHighlightsInMarkdown)
-    console.log(bookHighlightsInHtml)
-    var result = null
-    // const doc = new jsPDF({
-        // orientation: 'portrait',
-        // format: 'a4'
-    // });
-    // await doc.html(bookHighlightsInHtml,{
-        // async callback(doc){
-                // result = await doc.output('blob')
-        // }
-    // })
+    var bookHighlightsInMd = getMarkdown(title, content, flags)
+    var result = await generatePdfBlob(bookHighlightsInMd)
     return result
 }
 

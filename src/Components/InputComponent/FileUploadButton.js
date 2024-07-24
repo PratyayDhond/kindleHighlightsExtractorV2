@@ -30,7 +30,7 @@ export default function InputFileUpload({theme, setDisabled, setFileType, setFil
             setFileName(selectedFile.name)
             setDisabled(false);
             setFileType(selectedFile.type)
-            console.log(selectedFile)
+            // console.log(selectedFile)
             const reader = new FileReader();
             reader.onload = () => {
               setFileData(reader.result);    
