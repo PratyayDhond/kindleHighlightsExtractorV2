@@ -1,5 +1,6 @@
 import validateClippings from "./ValidateClippings";
 import getBooks from "./getBooks";
+import { ENDL, QUOTE, H5 } from "./Constants/markdownConstants";
 
 function getHighlightFilesZip(clippingsTxtFile, setErrorMessage){
 
@@ -53,12 +54,12 @@ function checkNull(value){
     return false
 }
 
-function getHtml(title, content, flags){
-    const ENDL = "<br/>";
+function getMarkdown(title, content, flags){
+
     var md = "";
-    md += "<h4> "+title+"</h4>"
+    md += "### "+title
     md += ENDL
-    md += "<h5> Highlights </h5>"
+    md += H5 + " Highlights"
     md += ENDL
     for(const highlight of content){
         if(flags.noteType)
@@ -70,26 +71,25 @@ function getHtml(title, content, flags){
         if(flags.pageNo && !checkNull(highlight.pageNo))
             md += "Page: " + highlight.pageNo + ENDL
         if(flags.highlight)
-            md += "<q>" + highlight.highlight+ "</q>" + ENDL
+            md += QUOTE + highlight.highlight + ENDL
         if(flags.date && !checkNull(highlight.timestamp))
             md += highlight.timestamp + ENDL
         md += ENDL + ENDL
-        if(md.endsWith("<h6> " + ENDL + ENDL + ENDL)){
+        if(md.endsWith(ENDL + ENDL + ENDL + ENDL)){
             md = "" // no flags enabled
             break
         }
     }   
-    console.log(md)
-    alert(md)
+    // console.log(md)
     return md;
 }
 
 async function bookToPdf(title,content,flags){
     
-    var bookHighlightsInHtml = getHtml(title, content, flags)
+    var bookHighlightsInMD = getMarkdown(title, content, flags)
     // const htmlString = marked(bookHighlightsInMarkdown)
     // console.log(bookHighlightsInMarkdown)
-    console.log(bookHighlightsInHtml)
+    console.log(bookHighlightsInMD)
     var result = null
     // const doc = new jsPDF({
         // orientation: 'portrait',
