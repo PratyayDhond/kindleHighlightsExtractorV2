@@ -11,7 +11,7 @@ function Header({theme, setTheme}){
     }else{
       setTheme(lightTheme)
     }
-  },[darkMode])
+  },[darkMode, setTheme])
 
     return (
         <div style={headerParentDivStyle}>

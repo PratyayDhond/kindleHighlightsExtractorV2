@@ -1,8 +1,5 @@
 import validateClippings from "./ValidateClippings";
 import getBooks from "./getBooks";
-import jsPDF from 'jspdf';
-// import marked from 'marked';
-// import PDFDocument from 'pdfkit';
 
 function getHighlightFilesZip(clippingsTxtFile, setErrorMessage){
 
@@ -92,17 +89,17 @@ async function bookToPdf(title,content,flags){
     var bookHighlightsInHtml = getHtml(title, content, flags)
     // const htmlString = marked(bookHighlightsInMarkdown)
     // console.log(bookHighlightsInMarkdown)
-    var count = 0;
-    const doc = new jsPDF({
-        orientation: 'portrait',
-        format: 'a4'
-    });
+    console.log(bookHighlightsInHtml)
     var result = null
-    await doc.html(bookHighlightsInHtml,{
-        async callback(doc){
-                result = await doc.output('blob')
-        }
-    })
+    // const doc = new jsPDF({
+        // orientation: 'portrait',
+        // format: 'a4'
+    // });
+    // await doc.html(bookHighlightsInHtml,{
+        // async callback(doc){
+                // result = await doc.output('blob')
+        // }
+    // })
     return result
 }
 
