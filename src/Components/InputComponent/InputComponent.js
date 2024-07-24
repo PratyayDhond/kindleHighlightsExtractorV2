@@ -2,7 +2,7 @@ import SubmitButton from './SubmitButton'
 import InputFileUpload from './FileUploadButton';
 import { useEffect, useState } from 'react';
 
-function InputComponent({theme}){
+function InputComponent({theme, setMarkdownObjects}){
 
     const [loading, setLoading] = useState(false)
     const [disabled, setDisabled] = useState(true)
@@ -21,7 +21,7 @@ function InputComponent({theme}){
         <>
             <InputFileUpload theme={theme} setDisabled={setDisabled} setFileType={setFileType}  setFileData={setFileData}/>
             <span style={{padding: "0 1rem 0 1rem"}}></span>
-            <SubmitButton theme={theme} loading={loading} setDisabled={setDisabled} setLoading={setLoading} disabled={disabled} fileType={fileType} uploadedFile={fileData} setErrorMessage={setErrorMessage}/>        
+            <SubmitButton theme={theme} loading={loading} setMarkdownObjects={setMarkdownObjects} setDisabled={setDisabled} setLoading={setLoading} disabled={disabled} fileType={fileType} uploadedFile={fileData} setErrorMessage={setErrorMessage}/>        
             <span><br/><br/>{errorMessage}</span>
         </>
     )

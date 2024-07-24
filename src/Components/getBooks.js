@@ -22,7 +22,7 @@ function getBooks(highlightText, setErrorMessage){
             i++
 
             // Adding CurrentQuote to book in books
-            addElement(books,title,currentQuote)
+            addElementToMap(books,title,currentQuote)
         }
     }catch(e){
         setErrorMessage("Error in parsing the file")
@@ -31,7 +31,7 @@ function getBooks(highlightText, setErrorMessage){
 }
 
 
-function addElement(map, key, value) {
+function addElementToMap(map, key, value) {
     if (!map[key]) {
       map[key] = [value];
     } else {
@@ -48,3 +48,4 @@ function getLinesFromHighlights(highlightText){
 }
 
 export default getBooks
+export {addElementToMap}

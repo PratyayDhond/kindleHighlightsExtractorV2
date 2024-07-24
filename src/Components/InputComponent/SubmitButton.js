@@ -1,11 +1,11 @@
 import { Button, CircularProgress } from '@material-ui/core';
 import { useEffect } from 'react';
 import { darkTheme } from '../Constants/themeConstants';
-import getHighlightFilesZip from '../getHighlightFilesZip';
+import getHighlightFilesMarkdownObjects from '../getHighlightFilesMarkdownObjects';
 import { INCORRECT_FILE_TYPE } from '../Constants/errorConstants';
-function SubmitButton({theme, loading, setLoading, setDisabled, disabled, fileType, uploadedFile, setErrorMessage}) {
+function SubmitButton({theme, setMarkdownObjects, loading, setLoading, setDisabled, disabled, fileType, uploadedFile, setErrorMessage}) {
 
-  var submitButtonTheme = theme === darkTheme ? SubmitButtonDark : SubmitButtonLight
+  var submitButtonTheme = theme === darkTheme ? ButtonDarkTheme : ButtonLightTheme
   useEffect(() => {
     if(uploadedFile !== null){
       // console.log(uploadedFile)
@@ -17,7 +17,7 @@ function SubmitButton({theme, loading, setLoading, setDisabled, disabled, fileTy
       variant="contained"
       style={submitButtonTheme}
       disabled={disabled} // disable the button as long as no file is uploaded
-      onClick={()=>{submitDataForParsing(setLoading,setDisabled,uploadedFile, fileType, setErrorMessage)}}
+      onClick={()=>{submitDataForParsing(setMarkdownObjects,setLoading,setDisabled,uploadedFile, fileType, setErrorMessage)}}
     >
      {
         loading 
@@ -28,7 +28,7 @@ function SubmitButton({theme, loading, setLoading, setDisabled, disabled, fileTy
   );
 }
 
-const SubmitButtonDark = {
+const ButtonDarkTheme = {
     backgroundColor: "#3e3e3e",
     color: "#c0c0c0",
     '&:hover': {
@@ -37,22 +37,23 @@ const SubmitButtonDark = {
     }
 };
 
-const SubmitButtonLight = {
+const ButtonLightTheme = {
     backgroundColor: "#e2dada",
     color: "#1f1e1e",
 }
 
 
-function submitDataForParsing(setLoading, setDisabled, file, fileType, setErrorMessage){
+function submitDataForParsing(setMarkdownObjects, setLoading, setDisabled, file, fileType, setErrorMessage){
   setLoading(true);
   setDisabled(true);
   if(fileType !== "text/plain")
     setErrorMessage(INCORRECT_FILE_TYPE)
   else
-    getHighlightFilesZip(file, setErrorMessage)
+    setMarkdownObjects(getHighlightFilesMarkdownObjects(file, setErrorMessage))
   setLoading(false);
   setDisabled(false);
   setErrorMessage(""); // since it reached here there was no error so safe to reset previous error message
 }
 
 export default SubmitButton
+export {ButtonDarkTheme, ButtonLightTheme}
